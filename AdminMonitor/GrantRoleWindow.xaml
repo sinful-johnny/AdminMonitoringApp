@@ -1,0 +1,46 @@
+﻿<Window x:Class="AdminMonitor.GrantRoleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdminMonitor"
+        mc:Ignorable="d"
+        Height="450" Width="800" Title="Choose a role to grant" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <DataGrid x:Name="dataGridView" SelectionMode="Single">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <EventSetter Event="MouseDoubleClick" Handler="GrantRole_Click"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Grant role" Click="GrantRole_Click"/>
+                    <MenuItem Header="Grant role with ADMIN OPTION" Click="GrantRoleWithOption_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button x:Name="PrevButton" Content="Prev" Click="PrevButton_Click" Height="20" Width="40"/>
+            <TextBlock VerticalAlignment="Center" Name="PageCountTextBox" d:Text="0/0"/>
+            <Button x:Name="NextButton" Content="Next" Click="NextButton_Click" Height="20" Width="40"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+            <TextBlock Text="Displaying " VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="rowPerPageOptionsComboBox" Width="65" VerticalContentAlignment="Center" SelectionChanged="rowPerPageOptionsComboBox_SelectionChanged"/>
+            <TextBlock x:Name="TotalItemDisplayTextBox" d:Text=" of 9999 Item(s)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <StatusBar Grid.Row="2" Height="25">
+            <TextBlock Text="Double click to grant the selected role or right click to see options"/>
+        </StatusBar>
+    </Grid>
+</Window>

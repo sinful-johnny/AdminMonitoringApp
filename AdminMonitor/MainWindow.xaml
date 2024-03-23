@@ -5,8 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdminMonitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Administrator Monitor" Height="450" Width="800" Closed="Window_Closed" Loaded="Window_Loaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--<Button Name="getUsersButton" Content="Get Users" Grid.Row="0" Height="30" Width="70" Click="getUsersButton_Click"/>
+        <Button Name="getRolesButton" Content="Get Roles" Grid.Row="0" Height="30" Width="70" Click="getRolesButton_Click" Grid.Column="1"/>-->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Welcome Administrator!" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBlock Text="This is the window where you find all users and roles in the database" HorizontalAlignment="Center"/>
+        </StackPanel>
+        
+        <StackPanel Grid.ColumnSpan="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="CREATE" VerticalAlignment="Center"/>
+            <ComboBox x:Name="SelectorComboBox" Width="80" Height="25" Margin="10,0,0,0" SelectionChanged="SelectorComboBox_SelectionChanged"/>
+            <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                <TextBlock Text="Enter name:"/>
+                <TextBox x:Name="NameTextBox" Width="150"/>
+                <TextBlock Text="Enter password:"/>
+                <PasswordBox x:Name="UserPasswordBox"/>
+            </StackPanel>
+            <Button x:Name="ExecuteButton" Content="EXECUTE" Width="60" Height="25" Margin="10,0,0,0" Click="ExecuteButton_Click"/>
+        </StackPanel>
 
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="1" VerticalAlignment="Center" Orientation="Horizontal">
+            <RadioButton x:Name="ViewUsersRadioButton" Content="View User" Checked="getUsersButton_Click"/>
+            <RadioButton Content="View Roles" x:Name="ViewRolesRadioButton" Margin="10,0,0,0" Checked="getRolesButton_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" >
+            <TextBlock Text="Displaying " VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="rowPerPageOptionsComboBox" Width="65" VerticalContentAlignment="Center" SelectionChanged="rowPerPageOptionsComboBox_SelectionChanged"/>
+            <TextBlock x:Name="TotalItemDisplayTextBox" d:Text=" of 9999 Item(s)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <DataGrid Name="dataGridView" Grid.Row="2" AutoGenerateColumns="True" FrozenColumnCount="2" Grid.ColumnSpan="2" SelectionMode="Single">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Privileges" Click="PrivilegesButton_Click" />
+                    <MenuItem Header="Grant Role" Click="GrantRoleButton_Click" x:Name="GrantRoleContextItem"/>
+                    <MenuItem Header="Delete" Click="Delete_Click"/>
+                    <MenuItem Header="Change Password" x:Name="ChangePasswordContextItem" Click="ChangePasswordContextItem_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button x:Name="PrevButton" Content="Prev" Click="PrevButton_Click" Height="20" Width="40"/>
+            <TextBlock VerticalAlignment="Center" Name="PageCountTextBox" d:Text="0/0"/>
+            <Button x:Name="NextButton" Content="Next" Click="NextButton_Click" Height="20" Width="40"/>
+        </StackPanel>
     </Grid>
 </Window>

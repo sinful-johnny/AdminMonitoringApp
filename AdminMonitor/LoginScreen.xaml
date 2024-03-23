@@ -1,0 +1,90 @@
+﻿<Window x:Class="AdminMonitor.LoginScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdminMonitor"
+        mc:Ignorable="d"
+        Title="Administrator Monitor" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Login" FontSize="42" FontWeight="Bold" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Data Source" FontSize="18"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="DBA Privilege" FontSize="18"/>
+        </StackPanel>
+        
+        <TextBox x:Name="DataSourceTextBox" Grid.Row="1" Grid.Column="1" Height="25" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="DBAPrivilegeComboBox" Grid.Column="1" Grid.Row="2" Height="25"  VerticalContentAlignment="Center"/>
+
+        <StackPanel Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Username" FontSize="18"/>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Password" FontSize="18"/>
+        </StackPanel>
+        <TextBox x:Name="UsernameTextBox"  d:Text="UsernameTextBox"  Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" FontSize="17">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="LightGreen"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <PasswordBox x:Name="PasswordBox" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" FontSize="17">
+            <PasswordBox.Style>
+                <Style TargetType="PasswordBox" >
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="LightGreen"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </PasswordBox.Style>
+        </PasswordBox>
+        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <CheckBox x:Name="RemembermeCheckBox" Content="Remeber me" FontSize="18"/>
+        </StackPanel>
+        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="LoginButton" Content="Login" FontSize="23" Click="LoginButton_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="Width" Value="80"/>
+                        <Setter Property="FontWeight" Value="Normal"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Height" Value="50"/>
+                                <Setter Property="Width" Value="90"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

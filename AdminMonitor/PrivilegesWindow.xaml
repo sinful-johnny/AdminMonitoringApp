@@ -1,0 +1,81 @@
+﻿<Window x:Class="AdminMonitor.PrivilegesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdminMonitor"
+        mc:Ignorable="d"
+        Title="PrivilegesWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center">
+            <RadioButton Content="Table Privileges" Name="TablePrivsRadioButton" Checked="TablePrivsRadioButton_Checked"/>
+            <RadioButton Content="Column Privileges" Name="ColumnPrivsRadioButton" Checked="ColumnPrivsRadioButton_Checked"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"  Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" >
+            <TextBlock Text="Displaying " VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="rowPerPageOptionsComboBox" Width="65" VerticalContentAlignment="Center" SelectionChanged="rowPerPageOptionsComboBox_SelectionChanged"/>
+            <TextBlock x:Name="TotalItemDisplayTextBox" d:Text=" of 9999 Item(s)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <DataGrid Name="dataGridView" Grid.Row="2" Grid.ColumnSpan="4" AutoGenerateColumns="True" FrozenColumnCount="1" SelectionMode="Single">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Revoke Privilege" Click="RevokePriv_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="4" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button x:Name="PrevButton" Content="Prev" Click="PrevButton_Click" Height="20" Width="40"/>
+            <TextBlock VerticalAlignment="Center" Name="PageCountTextBox" d:Text="0/0"/>
+            <Button x:Name="NextButton" Content="Next" Click="NextButton_Click" Height="20" Width="40"/>
+        </StackPanel>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Grant privilege to:"/>
+            <TextBlock x:Name="ObjectNameTextBlock" d:Text="Brother" FontSize="18" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+            <TextBlock Text="Choose an operation:"/>
+            <ComboBox Height="25" Name="OperationsComboBox" SelectionChanged="OperationsComboBox_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="5,0,0,0">
+            <TextBlock Text="Choose a table:"/>
+            <ComboBox Height="25" Name="TableNameComboBox" SelectionChanged="TableNameComboBox_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding table_name}"/> - <Run Text="{Binding table_owner}"/>
+                        </TextBlock>
+                        <!--<CheckBox Content="{Binding table_name}" />-->
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox x:Name="ColumnNamesComboBox" Margin="0,10,0,0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding ColumnName}" IsChecked="{Binding isChecked,Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="3" VerticalAlignment="Center">
+            <Button x:Name="GrantButton" Content="Grant" Width="50" Height="25" Click="GrantButton_Click"/>
+        </StackPanel>
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Column="1">
+            <CheckBox x:Name="GrantOptionCheckBox" Content="With grant option" />
+        </StackPanel>
+        
+    </Grid>
+</Window>
