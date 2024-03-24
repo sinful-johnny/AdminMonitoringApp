@@ -205,18 +205,21 @@ namespace AdminMonitor
             Table table = (Table)TableNameComboBox.SelectedItem;
             List<Column> columns = (List<Column>)ColumnNamesComboBox.ItemsSource;
             string columnList = "";
-            foreach(Column column in columns)
+            if(operation == "UPDATE" ||  operation == "SELECT")
             {
-                if(column.isChecked)
+                foreach (Column column in columns)
                 {
-                    columnList += $"{column.ColumnName},";
+                    if (column.isChecked)
+                    {
+                        columnList += $"{column.ColumnName},";
+                    }
+                }
+                if (columnList.Length > 0)
+                {
+                    columnList = columnList.Remove(columnList.Length - 1);
                 }
             }
-            if(columnList.Length > 0)
-            {
-                columnList = columnList.Remove(columnList.Length - 1);
-            }
-
+            
             string grantOption = "";
             if (GrantOptionCheckBox.IsChecked == true)
             {

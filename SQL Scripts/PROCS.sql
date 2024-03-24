@@ -11,7 +11,7 @@ create role TRGDONVI;
 --        policy_name      => 'NVCOBAN_NHANSU_SELECT'
 --    );
 --END;
-
+--
 --BEGIN
 --    dbms_rls.add_policy(
 --        OBJECT_SCHEMA =>'ADMIN',
@@ -22,44 +22,43 @@ create role TRGDONVI;
 --        SEC_RELEVANT_COLS => 'VAITRO'
 --        );
 --END;
-
-CREATE OR REPLACE PROCEDURE USP_CREATEUSER
-AS
-    CURSOR CUR IS (SELECT MAKH,VAITRO
-                    FROM ADMIN.PROJECT_NHANSU
-                    WHERE MAKH NOT IN (SELECT USERNAME
-                                        FROM ALL_USERS));
-    STRSQL VARCHAR(2000);
-    USR VARCHAR2(5);
-    VAITRO varchar2(40);
-BEGIN
-    OPEN CUR;
-    STRSQL := 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
-    EXECUTE IMMEDIATE(STRSQL);
-    LOOP
-        FETCH CUR INTO USR,VAITRO;
-        EXIT WHEN CUR%NOTFOUND;
-            
-        STRSQL := 'CREATE USER '||USR||' IDENTIFIED BY '||USR;
-        EXECUTE IMMEDIATE(STRSQL);
-        STRSQL := 'GRANT CONNECT TO '||USR;
-        EXECUTE IMMEDIATE(STRSQL);
-        STRSQL := 'GRANT ' || VAITRO || 'TO ' || USR;
-        EXECUTE IMMEDIATE(STRSQL);
-    END LOOP;
-    STRSQL := 'ALTER SESSION SET "_ORACLE_SCRIPT" = FALSE';
-    EXECUTE IMMEDIATE(STRSQL);
-    CLOSE CUR;
-END;
-
+--
+--CREATE OR REPLACE PROCEDURE USP_CREATEUSER
+--AS
+--    CURSOR CUR IS (SELECT MAKH,VAITRO
+--                    FROM ADMIN.PROJECT_NHANSU
+--                    WHERE MAKH NOT IN (SELECT USERNAME
+--                                        FROM ALL_USERS));
+--    STRSQL VARCHAR(2000);
+--    USR VARCHAR2(5);
+--    VAITRO varchar2(40);
+--BEGIN
+--    OPEN CUR;
+--    STRSQL := 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
+--    EXECUTE IMMEDIATE(STRSQL);
+--    LOOP
+--        FETCH CUR INTO USR,VAITRO;
+--        EXIT WHEN CUR%NOTFOUND;
+--            
+--        STRSQL := 'CREATE USER '||USR||' IDENTIFIED BY '||USR;
+--        EXECUTE IMMEDIATE(STRSQL);
+--        STRSQL := 'GRANT CONNECT TO '||USR;
+--        EXECUTE IMMEDIATE(STRSQL);
+--        STRSQL := 'GRANT ' || VAITRO || 'TO ' || USR;
+--        EXECUTE IMMEDIATE(STRSQL);
+--    END LOOP;
+--    STRSQL := 'ALTER SESSION SET "_ORACLE_SCRIPT" = FALSE';
+--    EXECUTE IMMEDIATE(STRSQL);
+--    CLOSE CUR;
+--END;
 
 
 --SELECT * FROM DBA_ROLES;
 
-ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
-create user NV001 identified by NV001;
-grant connect to NV001;
-grant NVCOBAN to NV001;
+--ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+--create user NV001 identified by NV001;
+--grant connect to NV001;
+--grant NVCOBAN to NV001;
 
 create or replace procedure grant_privilege(
     operation NVARCHAR2,
@@ -71,7 +70,7 @@ create or replace procedure grant_privilege(
 )as
     STRSQL NVARCHAR2(2000);
 BEGIN
-    if (operation = 'SELECT') then
+    if (operation = 'SELECT' and columnList != '') then
         BEGIN
             STRSQL := 'create or replace view ' || owner || '.' ||  schemaName || '_' || tableName || '_' || operation || 
                         '(' || columnList || ') as select ' || columnList || ' from ' || owner || '.' || tableName;
@@ -83,7 +82,7 @@ BEGIN
             EXECUTE IMMEDIATE(STRSQL);
 
         END;
-    elsif (operation = 'UPDATE') then
+    elsif (operation = 'UPDATE' and columnList != '') then
         BEGIN
             STRSQL := 'GRANT ' || operation || ' (' || columnList || ') ' || ' on ' || owner || '.' || tableName || ' to ' || schemaName;
             if(grantOption != ' ') then
@@ -129,12 +128,17 @@ create or replace procedure revoke_privilege(
 )as
     STRSQL nvarchar2(1000);
 BEGIN
+    STRSQL := 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
+    EXECUTE IMMEDIATE(STRSQL);
     STRSQL := 'REVOKE ' || operation || ' on ' || tableOwner || '.' || tableName || ' from ' || username;
     dbms_output.put_line(STRSQL);
     EXECUTE IMMEDIATE(STRSQL);
 END;
 
---execute revoke_privilege('NV001','SELECT','SYS','NV001_ACCESS$_SELECT');
+--execute revoke_privilege('DATAENTRY','UPDATE','SYS','BTTH_KHACHHANG');
+
+--ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+--revoke UPDATE on SYS.ACCESS$ from DATAENTRY;
 
 create or replace procedure revoke_role(
     username nvarchar2,
@@ -142,10 +146,14 @@ create or replace procedure revoke_role(
 )as
     STRSQL nvarchar2(1000);
 BEGIN
+    STRSQL := 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
+    EXECUTE IMMEDIATE(STRSQL);
     STRSQL := 'REVOKE ' || rolename || ' from ' || username;
     dbms_output.put_line(STRSQL);
     EXECUTE IMMEDIATE(STRSQL);
 END;
+
+execute revoke_role('DG001','DATAENTRY')
 
 create or replace procedure delete_user(
     username nvarchar2
