@@ -35,7 +35,7 @@ namespace AdminMonitor
         public ResultWindow(OracleConnection con,string operation, string tableOwner,string table,string schema, string columnList)
         {
             InitializeComponent();
-            if(columnList != null && columnList != "")
+            if(columnList != null && columnList != " ")
             {
                 DisplayMode = "ColumnPrivs";
             }
@@ -172,6 +172,11 @@ namespace AdminMonitor
                 dr.Close();
             }
             finally { }
+        }
+
+        private void OKButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

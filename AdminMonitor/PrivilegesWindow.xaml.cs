@@ -204,7 +204,7 @@ namespace AdminMonitor
             string operation = (string)OperationsComboBox.SelectedItem;
             Table table = (Table)TableNameComboBox.SelectedItem;
             List<Column> columns = (List<Column>)ColumnNamesComboBox.ItemsSource;
-            string columnList = "";
+            string columnList = " ";
             if(operation == "UPDATE" ||  operation == "SELECT")
             {
                 foreach (Column column in columns)
@@ -214,10 +214,14 @@ namespace AdminMonitor
                         columnList += $"{column.ColumnName},";
                     }
                 }
-                if (columnList.Length > 0)
+                if (columnList.Length > 1)
                 {
                     columnList = columnList.Remove(columnList.Length - 1);
                 }
+            }
+            else
+            {
+                columnList = " ";
             }
             
             string grantOption = "";

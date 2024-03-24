@@ -19,7 +19,7 @@
         <DataGrid Grid.Row="1" x:Name="dataGridView" AutoGenerateColumns="True"/>
 
         <StackPanel Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <Button x:Name="OKButton" Content="OK" Width="50" Height="20" Margin="0,0,5,0"/>
+            <Button x:Name="OKButton" Content="OK" Width="50" Height="20" Margin="0,0,5,0" Click="OKButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -70,19 +70,21 @@ create or replace procedure grant_privilege(
 )as
     STRSQL NVARCHAR2(2000);
 BEGIN
-    if (operation = 'SELECT' and columnList != '') then
+    if (operation = 'SELECT' and columnList != ' ') then
         BEGIN
             STRSQL := 'create or replace view ' || owner || '.' ||  schemaName || '_' || tableName || '_' || operation || 
                         '(' || columnList || ') as select ' || columnList || ' from ' || owner || '.' || tableName;
+            dbms_output.put_line(STRSQL);
             EXECUTE IMMEDIATE(STRSQL);
             STRSQL := 'GRANT ' || operation || ' on ' || owner || '.' || schemaName || '_' || tableName || '_' || operation || ' to ' || schemaName;
             if(grantOption != ' ') then
                 STRSQL := STRSQL || ' ' || grantOption;
             end if;
+            dbms_output.put_line(STRSQL);
             EXECUTE IMMEDIATE(STRSQL);
 
         END;
-    elsif (operation = 'UPDATE' and columnList != '') then
+    elsif (operation = 'UPDATE' and columnList != ' ') then
         BEGIN
             STRSQL := 'GRANT ' || operation || ' (' || columnList || ') ' || ' on ' || owner || '.' || tableName || ' to ' || schemaName;
             if(grantOption != ' ') then
@@ -103,7 +105,7 @@ BEGIN
     end if;
 END;
 
---execute grant_privilege('INSERT','ADMIN','PROJECT_DONVI','NVCOBAN','MADV,TENDV', 'WITH GRANT OPTION');
+--execute grant_privilege('SELECT','ADMIN','PROJECT_DONVI','NV001',' ', 'WITH GRANT OPTION');
 --revoke select on ADMIN.PROJECT_DONVI from NV001;
 
 create or replace procedure grant_role(
