@@ -104,7 +104,7 @@ namespace AdminMonitor
 
         private void LoadPrivileges(int page, int rowsPerPage)
         {
-            int skip = (page - 1) * 10;
+            int skip = (page - 1) * rowsPerPage;
             int take = rowsPerPage;
 
             OracleCommand query = _con.CreateCommand();
@@ -125,7 +125,7 @@ namespace AdminMonitor
             }else if(ColumnPrivsRadioButton.IsChecked == true)
             {
                 query.CommandText = """
-                Select grantee, owner, table_name, column_name, grantor, privilege,grantable , count(*) over() as "TotalItems"
+                Select grantee, owner, table_name, column_name, grantor, privilege,grantable, count(*) over() as "TotalItems"
                 from DBA_COL_PRIVS
                 where grantee =  :username1
                         or grantee in (select granted_role 
@@ -161,12 +161,13 @@ namespace AdminMonitor
                     if (totalItems % rowsPerPage == 0) totalPages = (totalItems / rowsPerPage);
                     else totalPages = (int)(totalItems / rowsPerPage) + 1;
                 }
+                table.Columns.Remove("TotalItems");
                 dataGridView.ItemsSource = table.DefaultView;
             }
             finally { dr.Close(); }
 
             PageCountTextBox.Text = $" {_currentPage}/{totalPages} ";
-            TotalItemDisplayTextBox.Text = $" of {totalItems} item(s).";
+            TotalItemDisplayTextBox.Text = $" of {totalItems} item(s).";          
 
             if (_currentPage == totalPages)
             {
@@ -236,6 +237,8 @@ namespace AdminMonitor
                 MessageBox.Show(ex.ToString(), "Failed!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
+            var resultScreen = new ResultWindow(_con,operation,table.table_owner,table.table_name,_username,columnList);
+            resultScreen.ShowDialog();
 
             LoadPrivileges(_currentPage,_rowsPerPage);
         }

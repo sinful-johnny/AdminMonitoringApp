@@ -1,4 +1,5 @@
 ﻿using FsCheck.Experimental;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace AdminMonitor
         {
             try
             {
-                int skip = (page - 1) * 10;
+                int skip = (page - 1) * rowsPerPage;
                 int take = rowsPerPage;
 
                 OracleCommand query = _con.CreateCommand();
@@ -60,7 +61,7 @@ namespace AdminMonitor
                                     SELECT ROLE,ROLE_ID,PASSWORD_REQUIRED,AUTHENTICATION_TYPE,COMMON,ORACLE_MAINTAINED,INHERITED,IMPLICIT,EXTERNAL_NAME,
                                     count(*) over() as "TotalItems"
                                     FROM DBA_ROLES
-                                    order by ROLE_ID
+                                    order by ROLE, ROLE_ID
                                     offset :Skip rows 
                                     fetch next :Take rows only
                                     """;
@@ -68,11 +69,6 @@ namespace AdminMonitor
                 query.Parameters.Add(new OracleParameter("Skip", skip));
                 query.Parameters.Add(new OracleParameter("Take", take));
                 OracleDataReader datareader = query.ExecuteReader();
-                //OracleDataAdapter oracleDataAdapter = new(query);
-                //while( datareader.Read())
-                //{
-                //    string ID = (string) datareader["MANV"];
-                //}
 
                 __RoleDT = new DataTable();
                 __RoleDT.Load(datareader);
@@ -83,11 +79,7 @@ namespace AdminMonitor
                     if (totalItems % rowsPerPage == 0) totalPages = (totalItems / rowsPerPage);
                     else totalPages = (int)(totalItems / rowsPerPage) + 1;
                 }
-                //string str = "";
-                //foreach (DataColumn column in __RoleDT.Columns)
-                //{
-                //    str += $"{column.ColumnName},";
-                //}
+                __RoleDT.Columns.Remove("TotalItems");
                 dataGridView.ItemsSource = __RoleDT.DefaultView;
 
                 PageCountTextBox.Text = $" {_currentPage}/{totalPages} ";
@@ -145,7 +137,8 @@ namespace AdminMonitor
                 return;
             }
 
-            MessageBox.Show($"Granted {rolename} to {username} successfully", "Success", MessageBoxButton.OK);
+            var resultScreen = new ResultWindow(_con, username, rolename);
+            resultScreen.ShowDialog();
             DialogResult = true;
         }
 
@@ -176,7 +169,8 @@ namespace AdminMonitor
                 return;
             }
 
-            MessageBox.Show($"Granted {rolename} to {username} WITH ADMIN OPTION successfully", "Success", MessageBoxButton.OK);
+            var resultScreen = new ResultWindow(_con, username, rolename);
+            resultScreen.ShowDialog();
             DialogResult = true;
         }
 

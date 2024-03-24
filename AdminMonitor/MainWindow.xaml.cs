@@ -71,7 +71,7 @@ namespace AdminMonitor
         {
             try
             {
-                int skip = (page - 1) * 10;
+                int skip = (page - 1) * rowsPerPage;
                 int take = rowsPerPage;
 
                 OracleCommand query = con.CreateCommand();
@@ -79,7 +79,7 @@ namespace AdminMonitor
                                     select USERNAME,USER_ID,PASSWORD,ACCOUNT_STATUS,LOCK_DATE,EXPIRY_DATE,DEFAULT_TABLESPACE,TEMPORARY_TABLESPACE,LOCAL_TEMP_TABLESPACE,CREATED,PROFILE,INITIAL_RSRC_CONSUMER_GROUP,EXTERNAL_NAME,PASSWORD_VERSIONS,EDITIONS_ENABLED,AUTHENTICATION_TYPE,PROXY_ONLY_CONNECT,COMMON,LAST_LOGIN,ORACLE_MAINTAINED,INHERITED,DEFAULT_COLLATION,IMPLICIT,ALL_SHARD,EXTERNAL_SHARD,PASSWORD_CHANGE_DATE,MANDATORY_PROFILE_VIOLATION,
                                     count(*) over() as "TotalItems"
                                     from dba_users
-                                    order by USER_ID
+                                    order by USERNAME,USER_ID
                                     offset :Skip rows 
                                     fetch next :Take rows only
                                     """;
@@ -101,6 +101,7 @@ namespace AdminMonitor
                 //{
                 //    str += $"{column.ColumnName},";
                 //}
+                empDT.Columns.Remove("TotalItems");
                 dataGridView.ItemsSource = empDT.DefaultView;
                 DisplayMode = "Users";
 
@@ -163,7 +164,7 @@ namespace AdminMonitor
         {
             try
             {
-                int skip = (page - 1) * 10;
+                int skip = (page - 1) * rowsPerPage;
                 int take = rowsPerPage;
 
                 OracleCommand query = con.CreateCommand();
@@ -171,7 +172,7 @@ namespace AdminMonitor
                                     SELECT ROLE,ROLE_ID,PASSWORD_REQUIRED,AUTHENTICATION_TYPE,COMMON,ORACLE_MAINTAINED,INHERITED,IMPLICIT,EXTERNAL_NAME,
                                     count(*) over() as "TotalItems"
                                     FROM DBA_ROLES
-                                    order by ROLE_ID
+                                    order by ROLE,ROLE_ID
                                     offset :Skip rows 
                                     fetch next :Take rows only
                                     """;
@@ -199,6 +200,7 @@ namespace AdminMonitor
                 //{
                 //    str += $"{column.ColumnName},";
                 //}
+                roleDT.Columns.Remove("TotalItems");
                 dataGridView.ItemsSource = roleDT.DefaultView;
                 DisplayMode = "Roles";
 
