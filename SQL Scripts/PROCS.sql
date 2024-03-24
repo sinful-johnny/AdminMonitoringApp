@@ -4,24 +4,24 @@ create role GIAOVU;
 create role TRGKHOA;
 create role TRGDONVI;
 
-BEGIN
-    dbms_rls.drop_policy(
-        object_schema     => 'ADMIN',
-        object_name      => 'PROJECT_NHANSU',
-        policy_name      => 'NVCOBAN_NHANSU_SELECT'
-    );
-END;
+--BEGIN
+--    dbms_rls.drop_policy(
+--        object_schema     => 'ADMIN',
+--        object_name      => 'PROJECT_NHANSU',
+--        policy_name      => 'NVCOBAN_NHANSU_SELECT'
+--    );
+--END;
 
-BEGIN
-    dbms_rls.add_policy(
-        OBJECT_SCHEMA =>'ADMIN',
-        OBJECT_NAME=>'PROJECT_NHANSU',
-        POLICY_NAME =>'NVCOBAN_NHANSU_SELECT',
-        FUNCTION_SCHEMA => 'ADMIN',
-        POLICY_FUNCTION=>'SEC_NVCOBAN_NHANSU_SELECT',
-        SEC_RELEVANT_COLS => 'VAITRO'
-        );
-END;
+--BEGIN
+--    dbms_rls.add_policy(
+--        OBJECT_SCHEMA =>'ADMIN',
+--        OBJECT_NAME=>'PROJECT_NHANSU',
+--        POLICY_NAME =>'NVCOBAN_NHANSU_SELECT',
+--        FUNCTION_SCHEMA => 'ADMIN',
+--        POLICY_FUNCTION=>'SEC_NVCOBAN_NHANSU_SELECT',
+--        SEC_RELEVANT_COLS => 'VAITRO'
+--        );
+--END;
 
 CREATE OR REPLACE PROCEDURE USP_CREATEUSER
 AS
@@ -54,7 +54,7 @@ END;
 
 
 
-SELECT * FROM DBA_ROLES;
+--SELECT * FROM DBA_ROLES;
 
 ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
 create user NV001 identified by NV001;
@@ -134,7 +134,7 @@ BEGIN
     EXECUTE IMMEDIATE(STRSQL);
 END;
 
-execute revoke_privilege('NV001','SELECT','SYS','NV001_ACCESS$_SELECT');
+--execute revoke_privilege('NV001','SELECT','SYS','NV001_ACCESS$_SELECT');
 
 create or replace procedure revoke_role(
     username nvarchar2,
@@ -158,7 +158,7 @@ BEGIN
 END;
 
 
-execute delete_user('NV002');
+--execute delete_user('NV002');
 
 create or replace procedure delete_role(
     rolename nvarchar2
@@ -208,5 +208,5 @@ BEGIN
     EXECUTE IMMEDIATE(STRSQL);
 END;
 
-select * from dba_users
+--select * from dba_users
 
