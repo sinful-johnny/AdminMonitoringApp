@@ -49,6 +49,11 @@
         </StackPanel>
 
         <DataGrid Name="dataGridView" Grid.Row="2" AutoGenerateColumns="True" FrozenColumnCount="2" Grid.ColumnSpan="2" SelectionMode="Single">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <EventSetter Event="MouseDoubleClick" Handler="PrivilegesButton_Click"/>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Privileges" Click="PrivilegesButton_Click" />
