@@ -380,6 +380,7 @@ namespace AdminMonitor
             _currentPage = 1;
             if(totalItems != -1)
             {
+                totalItems = -1;
                 LoadPrivileges(_currentPage, _rowsPerPage);
             }
         }
