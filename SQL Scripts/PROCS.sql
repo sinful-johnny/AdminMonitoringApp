@@ -1,8 +1,8 @@
-create role NVCOBAN;
-create role GIANGVIEN;
-create role GIAOVU;
-create role TRGKHOA;
-create role TRGDONVI;
+--create role NVCOBAN;
+--create role GIANGVIEN;
+--create role GIAOVU;
+--create role TRGKHOA;
+--create role TRGDONVI;
 
 --BEGIN
 --    dbms_rls.drop_policy(
@@ -155,7 +155,7 @@ BEGIN
     EXECUTE IMMEDIATE(STRSQL);
 END;
 
-execute revoke_role('DG001','DATAENTRY')
+--execute revoke_role('DG001','DATAENTRY')
 
 create or replace procedure delete_user(
     username nvarchar2
